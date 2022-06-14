@@ -2,21 +2,9 @@ import pygame
 from sys import exit
 from random import randint,choice
 
-pygame.init()
 
-WIDTH,HEIGHT = 800, 400
-screen = pygame.display.set_mode((800,400))
-pygame.display.set_caption("Escape from Shronah")
-clock = pygame.time.Clock()
-obstacle_timer = pygame.USEREVENT + 1
-pygame.time.set_timer(obstacle_timer,900)
 
-def collision():
-    if pygame.spritecollide(player.sprite,obstacle_group,False):
-        obstacle_group.empty()
-        return False
-    else:
-        return True
+
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -54,12 +42,30 @@ class Obstacle(pygame.sprite.Sprite):
     def destroy(self):
         if self.rect.x <= -100:
             self.kill()
+
+def collision():
+    if pygame.sprite.spritecollide(player.sprite,obstacle_group,False):
+        obstacle_group.empty()
+        return False
+    else:
+        return True
+
+pygame.init()
+
+WIDTH,HEIGHT = 800, 400
+screen = pygame.display.set_mode((800,400))
+pygame.display.set_caption("Escape from Shronah")
+clock = pygame.time.Clock()
+obstacle_timer = pygame.USEREVENT + 1
+pygame.time.set_timer(obstacle_timer,900)
+
 player = pygame.sprite.GroupSingle()
 player.add(Player())
 obstacle_group = pygame.sprite.Group()
 
 background = pygame.transform.scale(pygame.image.load('background.jpg').convert_alpha(), [WIDTH,HEIGHT])
 screen.blit(background,(0,0))
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -67,12 +73,16 @@ while True:
             exit()
         if event.type == obstacle_timer:
             obstacle_group.add(Obstacle(choice(["car", 'car', 'car', 'plane'])))
+    
+    
     screen.blit(background,(0,0))
     player.draw(screen)
     player.update()
 
     obstacle_group.draw(screen)
     obstacle_group.update()
+    
+    
     
     pygame.display.update()
     clock.tick(60)
