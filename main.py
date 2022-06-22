@@ -72,8 +72,11 @@ while True:
             pygame.quit()
             exit()
         if event.type == obstacle_timer:
-            obstacle_group.add(Obstacle(choice(["car", 'car', 'car', 'plane'])))
+            obstacle_group.add(Obstacle(choice(["car", 'car', 'car', 'plane']))) 
     
+    active = collision()
+    if not active:
+        break;
     
     screen.blit(background,(0,0))
     player.draw(screen)
@@ -81,8 +84,7 @@ while True:
 
     obstacle_group.draw(screen)
     obstacle_group.update()
-    
-    
-    
+
     pygame.display.update()
-    clock.tick(60)
+    clock.tick(60) 
+pygame.quit()
