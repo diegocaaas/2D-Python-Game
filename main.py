@@ -1,4 +1,4 @@
-import pygame
+import pygame 
 from sys import exit
 from random import randint,choice
 
@@ -8,34 +8,34 @@ from random import randint,choice
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.transform.scale(pygame.image.load('car.png').convert_alpha(), [125 ,125])
-        self.rect = self.image.get_rect(midbottom = (100,300))
+        self.image = pygame.image.load('char.png').convert_alpha()
+        self.rect = self.image.get_rect(center = (130,130))
         self.gravity = 0
         
     def player_input(self):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_SPACE] and self.rect.bottom >= 300:
+        if keys[pygame.K_SPACE] and self.rect.bottom >= 375:
             self.gravity = -20
     def apply_gravity(self):
         self.gravity += 1
         self.rect.y += self.gravity
-        if self.rect.bottom >= 300:
-            self.rect.bottom = 300
+        if self.rect.bottom >= 375:
+            self.rect.bottom = 375
     def update(self):
         self.player_input()
         self.apply_gravity()
 
 class Obstacle(pygame.sprite.Sprite):
-    def __init__(self, type):
+    def __init__(self, type): 
         super().__init__()
 
         if type == 'car':
-            self.image = pygame.transform.scale(pygame.image.load("car.png").convert_alpha(), [125,125])
-            y_pos = 210
+            self.image = pygame.image.load("car.png").convert_alpha()
+            y_pos = 370 
         else:
-            self.image = pygame.transform.scale(pygame.image.load("plane.png").convert_alpha(), [125,125])
-            y_pos = 300
-        self.rect = self.image.get_rect(midbottom = (randint(900,1100), y_pos) )
+            self.image = pygame.image.load("plane.png").convert_alpha()
+            y_pos = 275 
+        self.rect = self.image.get_rect(center = (randint(900,1100), y_pos) )
     def update(self):
         self.rect.x -= 6
         self.destroy()
@@ -72,7 +72,7 @@ while True:
             pygame.quit()
             exit()
         if event.type == obstacle_timer:
-            obstacle_group.add(Obstacle(choice(["car", 'car', 'car', 'plane']))) 
+            obstacle_group.add(Obstacle(choice(['car', 'car', 'car', 'plane']))) 
     
     active = collision()
     if not active:
